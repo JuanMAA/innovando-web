@@ -1,4 +1,4 @@
-import { MapPin, Phone, MessageCircle, Globe, Star, ExternalLink, Instagram, Share2 } from 'lucide-react'
+import { MapPin, Phone, MessageCircle, Globe, Star, ExternalLink, Camera, Share2 } from 'lucide-react'
 import { Business, Review } from '@/types'
 
 interface Props {
@@ -92,7 +92,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
         {/* Social icons row */}
         <div className="flex items-center justify-center gap-5 pt-2">
           <button className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
-            <Instagram className="w-4 h-4 text-white" />
+            <Camera className="w-4 h-4 text-white" />
           </button>
           <button className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition-colors">
             <Share2 className="w-4 h-4 text-white" />

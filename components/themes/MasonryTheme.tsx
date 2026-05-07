@@ -1,4 +1,4 @@
-import { MapPin, Phone, MessageCircle, Star, Instagram } from 'lucide-react'
+import { MapPin, Phone, MessageCircle, Star, Camera } from 'lucide-react'
 import { Business, Review } from '@/types'
 
 interface Props {
@@ -165,7 +165,7 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
         <div className="mx-auto max-w-6xl px-6 flex items-center justify-between">
           <p className="text-xs font-black uppercase tracking-widest text-white/30">{business.name}</p>
           <div className="flex items-center gap-4">
-            <Instagram className="w-4 h-4 text-white/20 hover:text-white/60 transition-colors cursor-pointer" />
+            <Camera className="w-4 h-4 text-white/20 hover:text-white/60 transition-colors cursor-pointer" />
             <p className="text-xs text-white/20">by <a href="https://innovando.cl" className="hover:text-white/50 transition-colors">Innovando</a></p>
           </div>
         </div>
