@@ -4,8 +4,13 @@ import SitioWeb from '@/components/SitioWeb'
 
 export const revalidate = 0
 
-export default async function HomePage() {
-  const id = process.env.BUSINESS_ID
+interface PageProps {
+  searchParams: Promise<{ id?: string }>
+}
+
+export default async function HomePage({ searchParams }: PageProps) {
+  const { id: queryId } = await searchParams
+  const id = queryId ?? process.env.BUSINESS_ID
   if (!id) notFound()
 
   const data = await getBusinessPageData(id)
