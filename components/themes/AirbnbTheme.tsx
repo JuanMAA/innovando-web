@@ -43,19 +43,15 @@ export default function AirbnbTheme({ business, photoRefs, reviews, t }: Props) 
       {/* Navbar */}
       <header className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="mx-auto max-w-7xl px-6 py-4 flex items-center justify-between">
-          <span className="text-rose-500 text-2xl font-black tracking-tight">airbnb</span>
+          <span className="text-rose-500 text-xl font-black tracking-tight truncate max-w-[200px]">{business.name}</span>
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-700">
-            <a href="#" className="hover:text-gray-900 border-b-2 border-gray-900 pb-0.5">{t.labels.stays}</a>
-            <a href="#" className="hover:text-gray-900">{t.labels.experiences}</a>
+            <a href="#galeria" className="hover:text-gray-900">{t.nav.gallery}</a>
+            <a href="#resenas" className="hover:text-gray-900">{t.nav.reviews}</a>
+            <a href="#contacto" className="hover:text-gray-900">{t.nav.contact}</a>
           </nav>
-          <div className="flex items-center gap-3">
-            <button className="text-sm font-semibold text-gray-700 hover:text-gray-900 hover:bg-gray-100 rounded-full px-4 py-2 transition-colors">
-              {t.labels.publish}
-            </button>
-            <button className="flex items-center gap-2 border border-gray-300 rounded-full px-3 py-2 text-gray-700 hover:shadow-md transition-shadow text-sm">
-              ☰ &nbsp; 👤
-            </button>
-          </div>
+          <a href="#contacto" className="inline-flex items-center gap-2 rounded-full bg-rose-500 px-4 py-2 text-sm font-semibold text-white hover:bg-rose-600 transition-colors">
+            {t.nav.book}
+          </a>
         </div>
       </header>
 
@@ -88,7 +84,7 @@ export default function AirbnbTheme({ business, photoRefs, reviews, t }: Props) 
         </div>
 
         {/* Photo grid */}
-        <div className="grid grid-cols-4 grid-rows-2 gap-2 rounded-2xl overflow-hidden h-[420px] mb-10">
+        <div id="galeria" className="grid grid-cols-4 grid-rows-2 gap-2 rounded-2xl overflow-hidden h-[420px] mb-10">
           <div className="col-span-2 row-span-2 bg-gray-200">
             {p1
               ? <img src={photoUrl(p1)} alt="main" className="w-full h-full object-cover" />
@@ -128,7 +124,7 @@ export default function AirbnbTheme({ business, photoRefs, reviews, t }: Props) 
 
             {/* Reviews */}
             {reviews.length > 0 && (
-              <div className="py-8">
+              <div id="resenas" className="py-8">
                 <div className="flex items-center gap-3 mb-6">
                   {business.rating && (
                     <>
@@ -158,7 +154,7 @@ export default function AirbnbTheme({ business, photoRefs, reviews, t }: Props) 
           </div>
 
           {/* Sidebar */}
-          <div className="hidden lg:block">
+          <div id="contacto" className="hidden lg:block">
             <div className="sticky top-28 border border-gray-200 rounded-2xl p-6 shadow-xl">
               <div className="flex items-baseline gap-1 mb-1">
                 <span className="text-xl font-bold text-gray-900">{t.actions.contact}</span>
@@ -168,7 +164,7 @@ export default function AirbnbTheme({ business, photoRefs, reviews, t }: Props) 
                   <Star className="w-3.5 h-3.5 fill-gray-900 text-gray-900" />
                   <span className="font-semibold">{business.rating.toFixed(2)}</span>
                   <span className="text-gray-400">·</span>
-                  <span className="text-gray-500 underline cursor-pointer">{business.num_reviews} reseñas</span>
+                  <span className="text-gray-500 underline cursor-pointer">{business.num_reviews} {t.labels.reviews}</span>
                 </div>
               )}
               <div className="flex flex-col gap-3 mt-4">

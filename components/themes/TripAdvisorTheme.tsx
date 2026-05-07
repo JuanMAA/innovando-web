@@ -43,26 +43,15 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews, t }: Pr
       {/* Header */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
         <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 bg-emerald-500 rounded-full flex items-center justify-center">
-              <span className="text-white font-black text-xs">TA</span>
-            </div>
-            <span className="text-lg font-black text-gray-900">Tripadvisor</span>
-          </div>
-          <nav className="hidden md:flex items-center gap-5 text-sm text-gray-600 font-medium">
-            {['Hotels', 'Attractions', 'Restaurants', 'Flights'].map(item => (
-              <a key={item} href="#" className="hover:text-emerald-600 transition-colors">{item}</a>
-            ))}
-          </nav>
-          <div className="flex items-center gap-3">
-            <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">{t.labels.signIn}</button>
-            <button className="bg-emerald-600 text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-emerald-700 transition-colors">{t.labels.join}</button>
-          </div>
+          <span className="text-lg font-black text-gray-900 truncate max-w-[220px]">{business.name}</span>
+          <a href="#contacto" className="bg-emerald-600 text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-emerald-700 transition-colors shrink-0">
+            {t.nav.book}
+          </a>
         </div>
         {/* Tabs */}
         <div className="mx-auto max-w-6xl px-6 flex gap-0 border-t border-gray-100 overflow-x-auto">
-          {[t.nav.home, t.nav.reviews, t.nav.gallery, t.nav.contact, 'Info'].map((tab, i) => (
-            <a key={tab} href={i === 1 ? '#resenas' : i === 2 ? '#galeria' : '#'} className={`px-5 py-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${i === 0 ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
+          {[t.nav.home, t.nav.reviews, t.nav.gallery, t.nav.contact].map((tab, i) => (
+            <a key={tab} href={i === 1 ? '#resenas' : i === 2 ? '#galeria' : i === 3 ? '#contacto' : '#'} className={`px-5 py-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${i === 0 ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
               {tab}
             </a>
           ))}
