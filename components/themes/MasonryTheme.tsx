@@ -1,17 +1,19 @@
 import { MapPin, Phone, MessageCircle, Star, Camera } from 'lucide-react'
 import { Business, Review } from '@/types'
+import { T } from '@/lib/i18n'
 
 interface Props {
   business: Business
   photoRefs: string[]
   reviews: Review[]
+  t: T
 }
 
 function photoUrl(ref: string) { return `/api/photo?ref=${ref}` }
 
 const HEIGHTS = ['h-48', 'h-64', 'h-56', 'h-72', 'h-52']
 
-export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
+export default function MasonryTheme({ business, photoRefs, reviews, t }: Props) {
   const city = [business.city, business.country === 'cl' ? 'Chile' : business.country].filter(Boolean).join(', ')
   const heroRef = photoRefs[0] ?? null
   const masonryRefs = photoRefs.slice(1)
@@ -23,12 +25,12 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
         <div className="mx-auto max-w-6xl px-6 py-4 flex items-center justify-between">
           <span className="text-lg font-black uppercase tracking-[0.2em] text-white">{business.name}</span>
           <nav className="hidden sm:flex items-center gap-8 text-xs font-semibold uppercase tracking-widest text-white/60">
-            <a href="#galeria" className="hover:text-white transition-colors">Galería</a>
-            <a href="#resenas" className="hover:text-white transition-colors">Reseñas</a>
-            <a href="#contacto" className="hover:text-white transition-colors">Contacto</a>
+            <a href="#galeria" className="hover:text-white transition-colors">{t.nav.gallery}</a>
+            <a href="#resenas" className="hover:text-white transition-colors">{t.nav.reviews}</a>
+            <a href="#contacto" className="hover:text-white transition-colors">{t.nav.contact}</a>
           </nav>
           <a href="#contacto" className="text-xs font-black uppercase tracking-widest border border-white px-4 py-2 hover:bg-white hover:text-zinc-950 transition-colors">
-            Reservar
+            {t.nav.book}
           </a>
         </div>
       </header>
@@ -44,7 +46,7 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
               {[1,2,3,4,5].map(n => (
                 <Star key={n} className={`w-5 h-5 ${n <= Math.round(business.rating!) ? 'text-amber-400 fill-amber-400' : 'text-white/20 fill-white/20'}`} />
               ))}
-              <span className="ml-2 text-white/60 text-sm">{business.rating.toFixed(1)} · {business.num_reviews} reseñas</span>
+              <span className="ml-2 text-white/60 text-sm">{business.rating.toFixed(1)} · {business.num_reviews} {t.labels.reviews}</span>
             </div>
           )}
           <h1 className="text-5xl sm:text-7xl lg:text-8xl font-black uppercase tracking-tight leading-none text-white mb-4">
@@ -57,10 +59,10 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
           )}
           <div className="mt-10 flex items-center gap-4">
             <a href="#galeria" className="bg-white text-zinc-950 font-black text-sm uppercase tracking-widest px-8 py-3.5 hover:bg-zinc-100 transition-colors">
-              Ver galería
+              {t.actions.allPhotos}
             </a>
             <a href="#contacto" className="border border-white/50 text-white font-black text-sm uppercase tracking-widest px-8 py-3.5 hover:border-white transition-colors">
-              Contactar
+              {t.actions.contact}
             </a>
           </div>
         </div>
@@ -74,7 +76,7 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
       {masonryRefs.length > 0 && (
         <div id="galeria" className="py-20 px-6">
           <div className="mx-auto max-w-6xl">
-            <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-12 text-center">— Galería —</p>
+            <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-12 text-center">— {t.sections.gallery} —</p>
             <div className="columns-2 sm:columns-3 gap-3 space-y-3">
               {masonryRefs.map((ref, i) => (
                 <div key={i} className={`break-inside-avoid overflow-hidden ${HEIGHTS[i % HEIGHTS.length]} bg-zinc-800`}>
@@ -92,11 +94,11 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
           <div className="mx-auto max-w-4xl px-6 grid grid-cols-3 divide-x divide-white/10 text-center">
             <div className="px-8">
               <p className="text-4xl font-black text-white">{business.rating.toFixed(1)}</p>
-              <p className="text-xs uppercase tracking-widest text-white/40 mt-1">Valoración</p>
+              <p className="text-xs uppercase tracking-widest text-white/40 mt-1">{t.labels.rating}</p>
             </div>
             <div className="px-8">
               <p className="text-4xl font-black text-white">{business.num_reviews ?? '—'}</p>
-              <p className="text-xs uppercase tracking-widest text-white/40 mt-1">Reseñas</p>
+              <p className="text-xs uppercase tracking-widest text-white/40 mt-1">{t.labels.reviews}</p>
             </div>
             <div className="px-8">
               <p className="text-4xl font-black text-white">★</p>
@@ -110,7 +112,7 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
       {reviews.length > 0 && (
         <div id="resenas" className="py-20 px-6">
           <div className="mx-auto max-w-6xl">
-            <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-12 text-center">— Lo que dicen —</p>
+            <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-12 text-center">— {t.sections.reviews} —</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-white/10">
               {reviews.map((r, i) => (
                 <div key={i} className="bg-zinc-950 p-8">
@@ -131,7 +133,7 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
       {/* Contact */}
       <div id="contacto" className="py-20 px-6 border-t border-white/10">
         <div className="mx-auto max-w-md text-center">
-          <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-4">— Contacto —</p>
+          <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-4">— {t.sections.contact} —</p>
           <h2 className="text-3xl font-black text-white mb-2">{business.name}</h2>
           {city && (
             <p className="text-white/40 text-sm mb-10 flex items-center justify-center gap-1.5">
@@ -146,11 +148,11 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
             )}
             {business.whatsapp && (
               <a href={`https://wa.me/${business.whatsapp}`} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-3 bg-white text-zinc-950 px-6 py-4 text-sm font-black hover:bg-zinc-200 transition-colors">
-                <MessageCircle className="w-4 h-4" />WhatsApp
+                <MessageCircle className="w-4 h-4" />{t.actions.whatsapp}
               </a>
             )}
             <a href="https://innovando.cl/contacto" className="flex items-center justify-center gap-3 bg-white text-zinc-950 px-6 py-4 text-sm font-black hover:bg-zinc-200 transition-colors">
-              Hacer una reserva
+              {t.actions.reserve}
             </a>
           </div>
           {business.address && (
@@ -166,7 +168,7 @@ export default function MasonryTheme({ business, photoRefs, reviews }: Props) {
           <p className="text-xs font-black uppercase tracking-widest text-white/30">{business.name}</p>
           <div className="flex items-center gap-4">
             <Camera className="w-4 h-4 text-white/20 hover:text-white/60 transition-colors cursor-pointer" />
-            <p className="text-xs text-white/20">by <a href="https://innovando.cl" className="hover:text-white/50 transition-colors">Innovando</a></p>
+            <p className="text-xs text-white/20">{t.labels.createdBy} <a href="https://innovando.cl" className="hover:text-white/50 transition-colors">Innovando</a></p>
           </div>
         </div>
       </footer>

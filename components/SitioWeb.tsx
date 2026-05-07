@@ -1,4 +1,5 @@
 import { Business, Review } from '@/types'
+import { Lang, T, t as getT } from '@/lib/i18n'
 import ClassicTheme from './themes/ClassicTheme'
 import AirbnbTheme from './themes/AirbnbTheme'
 import MasonryTheme from './themes/MasonryTheme'
@@ -12,14 +13,18 @@ interface Props {
   photoRefs: string[]
   reviews: Review[]
   style?: SiteStyle
+  lang?: Lang
 }
 
-export default function SitioWeb({ style = 'classic', ...rest }: Props) {
+export default function SitioWeb({ style = 'classic', lang = 'es', ...rest }: Props) {
+  const t: T = getT(lang)
+  const themeProps = { ...rest, t }
+
   switch (style) {
-    case 'airbnb':      return <AirbnbTheme {...rest} />
-    case 'masonry':     return <MasonryTheme {...rest} />
-    case 'tripadvisor': return <TripAdvisorTheme {...rest} />
-    case 'linktree':    return <LinktreeTheme {...rest} />
-    default:            return <ClassicTheme {...rest} />
+    case 'airbnb':      return <AirbnbTheme {...themeProps} />
+    case 'masonry':     return <MasonryTheme {...themeProps} />
+    case 'tripadvisor': return <TripAdvisorTheme {...themeProps} />
+    case 'linktree':    return <LinktreeTheme {...themeProps} />
+    default:            return <ClassicTheme {...themeProps} />
   }
 }

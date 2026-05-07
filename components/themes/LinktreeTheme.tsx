@@ -1,15 +1,17 @@
 import { MapPin, Phone, MessageCircle, Globe, Star, ExternalLink, Camera, Share2 } from 'lucide-react'
 import { Business, Review } from '@/types'
+import { T } from '@/lib/i18n'
 
 interface Props {
   business: Business
   photoRefs: string[]
   reviews: Review[]
+  t: T
 }
 
 function photoUrl(ref: string) { return `/api/photo?ref=${ref}` }
 
-export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
+export default function LinktreeTheme({ business, photoRefs, reviews, t }: Props) {
   const city = [business.city, business.country === 'cl' ? 'Chile' : business.country].filter(Boolean).join(', ')
   const avatarRef = photoRefs[0] ?? null
   const topReview = reviews.find(r => r.rating >= 4) ?? null
@@ -44,7 +46,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
             <Star key={n} className={`w-3.5 h-3.5 ${n <= Math.round(business.rating!) ? 'text-amber-300 fill-amber-300' : 'text-white/20 fill-white/20'}`} />
           ))}
           <span className="text-white text-sm font-bold ml-0.5">{business.rating.toFixed(1)}</span>
-          <span className="text-white/50 text-xs">· {business.num_reviews} reseñas</span>
+          <span className="text-white/50 text-xs">· {business.num_reviews} {t.labels.reviews}</span>
         </div>
       )}
 
@@ -53,7 +55,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
         {/* Reservar — primary */}
         <a href="https://innovando.cl/contacto"
           className="flex items-center justify-between w-full bg-white text-indigo-700 font-black text-sm rounded-2xl px-5 py-4 shadow-lg hover:scale-[1.02] transition-transform">
-          <span>📅 Hacer una reserva</span>
+          <span>📅 {t.actions.reserve}</span>
           <ExternalLink className="w-4 h-4 opacity-50" />
         </a>
 
@@ -68,7 +70,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
         {business.whatsapp && (
           <a href={`https://wa.me/${business.whatsapp}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-between w-full bg-green-500/80 backdrop-blur-sm text-white font-bold text-sm rounded-2xl px-5 py-4 border border-green-400/30 hover:bg-green-500 transition-colors">
-            <span className="flex items-center gap-3"><MessageCircle className="w-4 h-4" />WhatsApp</span>
+            <span className="flex items-center gap-3"><MessageCircle className="w-4 h-4" />{t.actions.whatsapp}</span>
             <ExternalLink className="w-4 h-4 opacity-40" />
           </a>
         )}
@@ -76,7 +78,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
         {business.website && (
           <a href={business.website} target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-between w-full bg-white/15 backdrop-blur-sm text-white font-bold text-sm rounded-2xl px-5 py-4 border border-white/20 hover:bg-white/25 transition-colors">
-            <span className="flex items-center gap-3"><Globe className="w-4 h-4" />Sitio web actual</span>
+            <span className="flex items-center gap-3"><Globe className="w-4 h-4" />{business.website.replace(/^https?:\/\//, '')}</span>
             <ExternalLink className="w-4 h-4 opacity-40" />
           </a>
         )}
@@ -84,7 +86,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
         {business.address && (
           <a href={`https://www.google.com/maps/search/${encodeURIComponent(business.address)}`} target="_blank" rel="noopener noreferrer"
             className="flex items-center justify-between w-full bg-white/15 backdrop-blur-sm text-white font-bold text-sm rounded-2xl px-5 py-4 border border-white/20 hover:bg-white/25 transition-colors">
-            <span className="flex items-center gap-3"><MapPin className="w-4 h-4" />Cómo llegar</span>
+            <span className="flex items-center gap-3"><MapPin className="w-4 h-4" />{t.actions.directions}</span>
             <ExternalLink className="w-4 h-4 opacity-40" />
           </a>
         )}
@@ -115,7 +117,7 @@ export default function LinktreeTheme({ business, photoRefs, reviews }: Props) {
 
       {/* Footer */}
       <p className="mt-10 text-white/30 text-xs">
-        Sitio creado por{' '}
+        {t.labels.createdBy}{' '}
         <a href="https://innovando.cl" className="text-white/50 hover:text-white transition-colors">Innovando</a>
       </p>
     </div>

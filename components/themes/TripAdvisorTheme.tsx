@@ -1,10 +1,12 @@
 import { MapPin, Phone, MessageCircle, Star, Globe, CheckCircle2, Award } from 'lucide-react'
 import { Business, Review } from '@/types'
+import { T } from '@/lib/i18n'
 
 interface Props {
   business: Business
   photoRefs: string[]
   reviews: Review[]
+  t: T
 }
 
 function photoUrl(ref: string) { return `/api/photo?ref=${ref}` }
@@ -20,22 +22,22 @@ function BubbleRating({ rating }: { rating: number }) {
   )
 }
 
-export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props) {
-  const categoryLabel = business.category ?? 'Alojamiento'
+export default function TripAdvisorTheme({ business, photoRefs, reviews, t }: Props) {
+  const categoryLabel = business.category ?? t.labels.accommodation
   const city = [business.city, business.country === 'cl' ? 'Chile' : business.country].filter(Boolean).join(', ')
   const [hero, ...gallery] = photoRefs
 
   const ratingLabel =
     !business.rating ? '' :
-    business.rating >= 4.8 ? 'Excelente' :
-    business.rating >= 4.5 ? 'Muy bueno' :
-    business.rating >= 4.0 ? 'Bueno' : 'Aceptable'
+    business.rating >= 4.8 ? t.labels.excellent :
+    business.rating >= 4.5 ? t.labels.veryGood :
+    business.rating >= 4.0 ? t.labels.good : t.labels.acceptable
 
   return (
     <div className="min-h-screen bg-gray-100 font-sans text-gray-900">
       {/* Top banner */}
       <div className="bg-emerald-600 text-white text-xs py-1.5 text-center font-semibold tracking-wide">
-        🌟 Todas las reseñas verificadas por viajeros reales
+        🌟 {t.labels.googleReviews}
       </div>
 
       {/* Header */}
@@ -48,18 +50,18 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
             <span className="text-lg font-black text-gray-900">Tripadvisor</span>
           </div>
           <nav className="hidden md:flex items-center gap-5 text-sm text-gray-600 font-medium">
-            {['Hoteles', 'Atracciones', 'Restaurantes', 'Vuelos'].map(item => (
+            {['Hotels', 'Attractions', 'Restaurants', 'Flights'].map(item => (
               <a key={item} href="#" className="hover:text-emerald-600 transition-colors">{item}</a>
             ))}
           </nav>
           <div className="flex items-center gap-3">
-            <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">Iniciar sesión</button>
-            <button className="bg-emerald-600 text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-emerald-700 transition-colors">Únete</button>
+            <button className="text-sm text-gray-600 hover:text-gray-900 font-medium">{t.labels.signIn}</button>
+            <button className="bg-emerald-600 text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-emerald-700 transition-colors">{t.labels.join}</button>
           </div>
         </div>
         {/* Tabs */}
         <div className="mx-auto max-w-6xl px-6 flex gap-0 border-t border-gray-100 overflow-x-auto">
-          {['Resumen', 'Reseñas', 'Fotos', 'Ubicación', 'Info'].map((tab, i) => (
+          {[t.nav.home, t.nav.reviews, t.nav.gallery, t.nav.contact, 'Info'].map((tab, i) => (
             <a key={tab} href={i === 1 ? '#resenas' : i === 2 ? '#galeria' : '#'} className={`px-5 py-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${i === 0 ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
               {tab}
             </a>
@@ -77,7 +79,7 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
                   {categoryLabel}
                 </span>
                 <span className="flex items-center gap-1 text-xs font-semibold text-emerald-700">
-                  <CheckCircle2 className="w-3.5 h-3.5" /> Verificado
+                  <CheckCircle2 className="w-3.5 h-3.5" /> {t.labels.verified}
                 </span>
               </div>
               <h1 className="text-2xl font-black text-gray-900 mb-2">{business.name}</h1>
@@ -92,7 +94,7 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
                 <p className="text-4xl font-black text-gray-900">{business.rating.toFixed(1)}</p>
                 <BubbleRating rating={business.rating} />
                 <p className="text-xs font-bold text-emerald-700 mt-1">{ratingLabel}</p>
-                <p className="text-xs text-gray-400 mt-0.5">{business.num_reviews} reseñas</p>
+                <p className="text-xs text-gray-400 mt-0.5">{business.num_reviews} {t.labels.reviews}</p>
               </div>
             )}
           </div>
@@ -105,7 +107,7 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
             {hero && (
               <div id="galeria" className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
                 <div className="p-4 border-b border-gray-100">
-                  <h2 className="text-base font-bold text-gray-900">Fotos de viajeros</h2>
+                  <h2 className="text-base font-bold text-gray-900">{t.sections.gallery}</h2>
                 </div>
                 <div className="grid grid-cols-3 gap-0.5">
                   <div className="col-span-2 aspect-[4/3]">
@@ -129,7 +131,7 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
             {reviews.length > 0 && (
               <div id="resenas" className="bg-white rounded-xl border border-gray-200 shadow-sm">
                 <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                  <h2 className="text-base font-bold text-gray-900">Reseñas de viajeros</h2>
+                  <h2 className="text-base font-bold text-gray-900">{t.sections.reviews}</h2>
                   {business.rating && <BubbleRating rating={business.rating} />}
                 </div>
                 <div className="divide-y divide-gray-100">
@@ -161,13 +163,13 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
             {business.rating && business.rating >= 4.5 && (
               <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm text-center">
                 <Award className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-                <p className="text-xs font-black uppercase tracking-wide text-gray-700">Travellers&apos; Choice</p>
-                <p className="text-xs text-gray-400 mt-1">Top valorado por viajeros</p>
+                <p className="text-xs font-black uppercase tracking-wide text-gray-700">{t.labels.travelersChoice}</p>
+                <p className="text-xs text-gray-400 mt-1">{t.labels.topRated}</p>
               </div>
             )}
             {/* Contact card */}
             <div className="bg-white rounded-xl border border-gray-200 p-4 shadow-sm">
-              <h3 className="text-sm font-bold text-gray-900 mb-4">Información de contacto</h3>
+              <h3 className="text-sm font-bold text-gray-900 mb-4">{t.sections.contact}</h3>
               <div className="space-y-3">
                 {business.address && (
                   <div className="flex items-start gap-2.5 text-sm text-gray-600">
@@ -191,11 +193,11 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
                 )}
                 {business.whatsapp && (
                   <a href={`https://wa.me/${business.whatsapp}`} target="_blank" rel="noopener noreferrer" className="w-full flex items-center justify-center gap-2 rounded-lg bg-green-500 px-4 py-3 text-sm font-semibold text-white hover:bg-green-600 transition-colors">
-                    <MessageCircle className="w-4 h-4" />WhatsApp
+                    <MessageCircle className="w-4 h-4" />{t.actions.whatsapp}
                   </a>
                 )}
                 <a href="https://innovando.cl/contacto" className="w-full flex items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-3 text-sm font-bold text-white hover:bg-emerald-700 transition-colors">
-                  Contactar
+                  {t.actions.contact}
                 </a>
               </div>
             </div>
@@ -215,7 +217,7 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews }: Props
       <footer className="bg-gray-900 text-gray-400 py-6 mt-8">
         <div className="mx-auto max-w-6xl px-6 flex items-center justify-between text-xs">
           <span>© 2025 {business.name}</span>
-          <span>Sitio creado por <a href="https://innovando.cl" className="text-emerald-400 hover:text-emerald-300">Innovando</a></span>
+          <span>{t.labels.createdBy} <a href="https://innovando.cl" className="text-emerald-400 hover:text-emerald-300">Innovando</a></span>
         </div>
       </footer>
     </div>
