@@ -10,15 +10,10 @@ const nextConfig: NextConfig = {
       {
         source: '/(.*)',
         headers: [
-          // Allow embedding in iframes from any origin
+          // Allow iframe embedding only from trusted Innovando origins
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors *",
-          },
-          // Remove X-Frame-Options restriction (CSP frame-ancestors takes precedence in modern browsers)
-          {
-            key: 'X-Frame-Options',
-            value: 'ALLOWALL',
+            value: "frame-ancestors 'self' https://reports.innovando.cl https://innovando-reports.vercel.app",
           },
         ],
       },
