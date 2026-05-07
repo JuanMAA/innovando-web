@@ -1,4 +1,5 @@
 import { MapPin, Phone, Globe, Star, ChevronRight, MessageCircle } from 'lucide-react'
+import MapEmbed from '@/components/MapEmbed'
 import { Business, Review } from '@/types'
 import { T } from '@/lib/i18n'
 
@@ -120,6 +121,7 @@ export default function ClassicTheme({ business, photoRefs, reviews, t }: Props)
               </div>
             </div>
           </div>
+          <MapEmbed business={business} className="mt-10" height="h-72" />
         </div>
       </div>
 

@@ -1,4 +1,5 @@
 import { MapPin, Phone, MessageCircle, Star, Share2, Heart } from 'lucide-react'
+import MapEmbed from '@/components/MapEmbed'
 import { Business, Review } from '@/types'
 import { T } from '@/lib/i18n'
 
@@ -151,6 +152,11 @@ export default function AirbnbTheme({ business, photoRefs, reviews, t }: Props) 
                 </div>
               </div>
             )}
+
+            {/* Map */}
+            <div className="py-8 border-t border-gray-200">
+              <MapEmbed business={business} height="h-64" />
+            </div>
           </div>
 
           {/* Sidebar */}

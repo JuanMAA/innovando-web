@@ -1,4 +1,5 @@
 import { MapPin, Phone, MessageCircle, Globe, Star, ExternalLink, Camera, Share2 } from 'lucide-react'
+import MapEmbed from '@/components/MapEmbed'
 import { Business, Review } from '@/types'
 import { T } from '@/lib/i18n'
 
@@ -115,8 +116,11 @@ export default function LinktreeTheme({ business, photoRefs, reviews, t }: Props
         )}
       </div>
 
+      {/* Map */}
+      <MapEmbed business={business} className="w-full max-w-sm mt-6" height="h-48" />
+
       {/* Footer */}
-      <p className="mt-10 text-white/30 text-xs">
+      <p className="mt-6 text-white/30 text-xs">
         {t.labels.createdBy}{' '}
         <a href="https://innovando.cl" className="text-white/50 hover:text-white transition-colors">Innovando</a>
       </p>

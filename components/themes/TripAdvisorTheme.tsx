@@ -1,4 +1,5 @@
 import { MapPin, Phone, MessageCircle, Star, Globe, CheckCircle2, Award } from 'lucide-react'
+import MapEmbed from '@/components/MapEmbed'
 import { Business, Review } from '@/types'
 import { T } from '@/lib/i18n'
 
@@ -188,15 +189,8 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews, t }: Pr
                 </a>
               </div>
             </div>
-            {/* Map placeholder */}
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden shadow-sm">
-              <div className="h-40 bg-gradient-to-br from-emerald-50 to-teal-100 flex items-center justify-center">
-                <div className="text-center">
-                  <MapPin className="w-8 h-8 text-emerald-400 mx-auto mb-1" />
-                  <p className="text-xs font-semibold text-gray-500">{city}</p>
-                </div>
-              </div>
-            </div>
+            {/* Map */}
+            <MapEmbed business={business} height="h-48" />
           </div>
         </div>
       </main>

@@ -1,4 +1,5 @@
 import { MapPin, Phone, MessageCircle, Star, Camera } from 'lucide-react'
+import MapEmbed from '@/components/MapEmbed'
 import { Business, Review } from '@/types'
 import { T } from '@/lib/i18n'
 
@@ -133,6 +134,7 @@ export default function MasonryTheme({ business, photoRefs, reviews, t }: Props)
       {/* Contact */}
       <div id="contacto" className="py-20 px-6 border-t border-white/10">
         <div className="mx-auto max-w-md text-center">
+          <MapEmbed business={business} className="mb-10 text-left" height="h-56" />
           <p className="text-xs font-black uppercase tracking-[0.4em] text-white/40 mb-4">— {t.sections.contact} —</p>
           <h2 className="text-3xl font-black text-white mb-2">{business.name}</h2>
           {city && (
