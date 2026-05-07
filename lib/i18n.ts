@@ -39,6 +39,9 @@ export const translations = {
       lightMode: 'Modo claro',
       fontSize: 'Tamaño de texto',
       highContrast: 'Alto contraste',
+      grayscale: 'Blanco y negro',
+      invertColors: 'Invertir colores',
+      highlightLinks: 'Remarcar enlaces',
       reset: 'Restablecer',
       menu: 'Menú de accesibilidad',
       close: 'Cerrar',
@@ -84,6 +87,9 @@ export const translations = {
       lightMode: 'Light mode',
       fontSize: 'Font size',
       highContrast: 'High contrast',
+      grayscale: 'Black & white',
+      invertColors: 'Invert colors',
+      highlightLinks: 'Highlight links',
       reset: 'Reset',
       menu: 'Accessibility menu',
       close: 'Close',
@@ -129,6 +135,9 @@ export const translations = {
       lightMode: 'Mode clair',
       fontSize: 'Taille du texte',
       highContrast: 'Contraste élevé',
+      grayscale: 'Noir et blanc',
+      invertColors: 'Inverser les couleurs',
+      highlightLinks: 'Mettre en évidence les liens',
       reset: 'Réinitialiser',
       menu: "Menu d'accessibilité",
       close: 'Fermer',
@@ -174,6 +183,9 @@ export const translations = {
       lightMode: 'Modalità chiara',
       fontSize: 'Dimensione testo',
       highContrast: 'Alto contrasto',
+      grayscale: 'Bianco e nero',
+      invertColors: 'Inverti colori',
+      highlightLinks: 'Evidenzia link',
       reset: 'Ripristina',
       menu: 'Menu di accessibilità',
       close: 'Chiudi',
@@ -219,6 +231,9 @@ export const translations = {
       lightMode: 'Heller Modus',
       fontSize: 'Schriftgröße',
       highContrast: 'Hoher Kontrast',
+      grayscale: 'Schwarz-Weiß',
+      invertColors: 'Farben invertieren',
+      highlightLinks: 'Links hervorheben',
       reset: 'Zurücksetzen',
       menu: 'Barrierefreiheitsmenü',
       close: 'Schließen',
@@ -228,7 +243,7 @@ export const translations = {
 
 export type Lang = keyof typeof translations
 export type T = typeof translations.es
-export type A11y = { title: string; darkMode: string; lightMode: string; fontSize: string; highContrast: string; reset: string; menu: string; close: string }
+export type A11y = { title: string; darkMode: string; lightMode: string; fontSize: string; highContrast: string; grayscale: string; invertColors: string; highlightLinks: string; reset: string; menu: string; close: string }
 
 const VALID_LANGS = Object.keys(translations) as Lang[]
 

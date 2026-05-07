@@ -1,21 +1,54 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Accessibility, Moon, Sun, Type, Contrast, RotateCcw, X, Minus, Plus } from 'lucide-react'
+import { Accessibility, Moon, Sun, Type, Contrast, RotateCcw, X, Minus, Plus, Palette, FlipVertical2, Link } from 'lucide-react'
 import { getLang, translations, A11y } from '@/lib/i18n'
 
-type Prefs = { darkMode: boolean; fontSize: number; highContrast: boolean }
-const DEFAULTS: Prefs = { darkMode: false, fontSize: 0, highContrast: false }
+type Prefs = {
+  darkMode: boolean
+  fontSize: number
+  highContrast: boolean
+  grayscale: boolean
+  invertColors: boolean
+  highlightLinks: boolean
+}
+const DEFAULTS: Prefs = {
+  darkMode: false,
+  fontSize: 0,
+  highContrast: false,
+  grayscale: false,
+  invertColors: false,
+  highlightLinks: false,
+}
 
 function applyPrefs(p: Prefs) {
   const html = document.documentElement
-  // Combine filters as inline style so they stack correctly
   const filters: string[] = []
   if (p.darkMode)      filters.push('invert(1) hue-rotate(180deg)')
+  if (p.invertColors)  filters.push('invert(1)')
+  if (p.grayscale)     filters.push('grayscale(1)')
   if (p.highContrast)  filters.push('contrast(1.5) saturate(1.1)')
   html.style.filter = filters.join(' ')
-  html.dataset.darkMode = p.darkMode ? '1' : '0'
+  html.dataset.darkMode     = p.darkMode ? '1' : '0'
+  html.dataset.highlightLinks = p.highlightLinks ? '1' : '0'
   html.style.fontSize = ['100%', '112%', '130%'][p.fontSize]
+}
+
+function Toggle({
+  active, onClick, icon, label,
+}: { active: boolean; onClick: () => void; icon: React.ReactNode; label: string }) {
+  return (
+    <button
+      onClick={onClick}
+      className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
+        active ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+      }`}
+    >
+      <span className="shrink-0 w-4 h-4 flex items-center justify-center">{icon}</span>
+      {label}
+      {active && <span className="ml-auto w-2 h-2 rounded-full bg-blue-400 shrink-0" />}
+    </button>
+  )
 }
 
 export default function AccessibilityMenu() {
@@ -24,11 +57,9 @@ export default function AccessibilityMenu() {
   const [lang, setLang] = useState<A11y>(translations.es.a11y)
 
   useEffect(() => {
-    // Detect browser language
     const detected = getLang(navigator.language)
     setLang(translations[detected].a11y as A11y)
 
-    // Load saved prefs
     try {
       const saved = localStorage.getItem('a11y-prefs')
       if (saved) {
@@ -52,11 +83,11 @@ export default function AccessibilityMenu() {
     localStorage.removeItem('a11y-prefs')
   }
 
-  const hasAny = prefs.darkMode || prefs.highContrast || prefs.fontSize > 0
+  const hasAny = prefs.darkMode || prefs.highContrast || prefs.grayscale || prefs.invertColors || prefs.highlightLinks || prefs.fontSize > 0
 
   return (
     <>
-      {/* Trigger button */}
+      {/* Trigger */}
       <button
         onClick={() => setOpen(o => !o)}
         aria-label={lang.menu}
@@ -77,8 +108,8 @@ export default function AccessibilityMenu() {
         <div
           role="dialog"
           aria-label={lang.title}
-          className="fixed bottom-18 right-5 z-50 bg-white border border-gray-200 rounded-2xl shadow-2xl w-72 overflow-hidden"
-          style={{ bottom: '4.5rem' }}
+          className="fixed z-50 bg-white border border-gray-200 rounded-2xl shadow-2xl w-72 overflow-hidden"
+          style={{ bottom: '4.5rem', right: '1.25rem' }}
         >
           {/* Header */}
           <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
@@ -95,34 +126,46 @@ export default function AccessibilityMenu() {
             </button>
           </div>
 
-          <div className="p-4 space-y-2">
+          <div className="p-4 space-y-2 max-h-[70vh] overflow-y-auto">
             {/* Dark mode */}
-            <button
+            <Toggle
+              active={prefs.darkMode}
               onClick={() => update({ darkMode: !prefs.darkMode })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                prefs.darkMode
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              {prefs.darkMode
-                ? <Sun className="w-4 h-4 shrink-0" />
-                : <Moon className="w-4 h-4 shrink-0" />}
-              {prefs.darkMode ? lang.lightMode : lang.darkMode}
-            </button>
+              icon={prefs.darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+              label={prefs.darkMode ? lang.lightMode : lang.darkMode}
+            />
+
+            {/* Invert colors */}
+            <Toggle
+              active={prefs.invertColors}
+              onClick={() => update({ invertColors: !prefs.invertColors })}
+              icon={<FlipVertical2 className="w-4 h-4" />}
+              label={lang.invertColors}
+            />
+
+            {/* Grayscale */}
+            <Toggle
+              active={prefs.grayscale}
+              onClick={() => update({ grayscale: !prefs.grayscale })}
+              icon={<Palette className="w-4 h-4" />}
+              label={lang.grayscale}
+            />
 
             {/* High contrast */}
-            <button
+            <Toggle
+              active={prefs.highContrast}
               onClick={() => update({ highContrast: !prefs.highContrast })}
-              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
-                prefs.highContrast
-                  ? 'bg-gray-900 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              <Contrast className="w-4 h-4 shrink-0" />
-              {lang.highContrast}
-            </button>
+              icon={<Contrast className="w-4 h-4" />}
+              label={lang.highContrast}
+            />
+
+            {/* Highlight links */}
+            <Toggle
+              active={prefs.highlightLinks}
+              onClick={() => update({ highlightLinks: !prefs.highlightLinks })}
+              icon={<Link className="w-4 h-4" />}
+              label={lang.highlightLinks}
+            />
 
             {/* Font size */}
             <div className="flex items-center gap-2 px-4 py-3 bg-gray-100 rounded-xl">
@@ -163,11 +206,21 @@ export default function AccessibilityMenu() {
         </div>
       )}
 
-      {/* CSS for dark mode image re-inversion */}
+      {/* Global CSS overrides */}
       <style>{`
+        /* Dark mode: re-invert images so they look natural */
         html[data-dark-mode="1"] img,
         html[data-dark-mode="1"] video {
           filter: invert(1) hue-rotate(180deg);
+        }
+        /* Highlight links: bold outline + underline on every <a> */
+        html[data-highlight-links="1"] a {
+          text-decoration: underline !important;
+          text-decoration-thickness: 2px !important;
+          text-underline-offset: 3px !important;
+          outline: 2px solid currentColor;
+          outline-offset: 2px;
+          border-radius: 2px;
         }
       `}</style>
     </>
