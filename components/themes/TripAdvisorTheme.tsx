@@ -40,21 +40,19 @@ export default function TripAdvisorTheme({ business, photoRefs, reviews, t }: Pr
         🌟 {t.labels.googleReviews}
       </div>
 
-      {/* Header */}
+      {/* Header — single tab bar with book CTA on the right */}
       <header className="bg-white border-b border-gray-200 shadow-sm">
-        <div className="mx-auto max-w-6xl px-6 py-3 flex items-center justify-between">
-          <span className="text-lg font-black text-gray-900 truncate max-w-[220px]">{business.name}</span>
-          <a href="#contacto" className="bg-emerald-600 text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-emerald-700 transition-colors shrink-0">
+        <div className="mx-auto max-w-6xl px-6 flex items-center justify-between overflow-x-auto">
+          <div className="flex gap-0 shrink-0">
+            {[t.nav.home, t.nav.reviews, t.nav.gallery, t.nav.contact].map((tab, i) => (
+              <a key={tab} href={i === 1 ? '#resenas' : i === 2 ? '#galeria' : i === 3 ? '#contacto' : '#'} className={`px-5 py-3.5 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${i === 0 ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
+                {tab}
+              </a>
+            ))}
+          </div>
+          <a href="#contacto" className="ml-4 shrink-0 bg-emerald-600 text-white text-sm font-bold px-4 py-2 rounded-full hover:bg-emerald-700 transition-colors">
             {t.nav.book}
           </a>
-        </div>
-        {/* Tabs */}
-        <div className="mx-auto max-w-6xl px-6 flex gap-0 border-t border-gray-100 overflow-x-auto">
-          {[t.nav.home, t.nav.reviews, t.nav.gallery, t.nav.contact].map((tab, i) => (
-            <a key={tab} href={i === 1 ? '#resenas' : i === 2 ? '#galeria' : i === 3 ? '#contacto' : '#'} className={`px-5 py-3 text-sm font-semibold border-b-2 whitespace-nowrap transition-colors ${i === 0 ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-gray-500 hover:text-gray-700'}`}>
-              {tab}
-            </a>
-          ))}
         </div>
       </header>
 
