@@ -10,10 +10,23 @@ const nextConfig: NextConfig = {
       {
         source: '/(.*)',
         headers: [
-          // Allow iframe embedding only from trusted Innovando origins
+          // Allow iframe embedding from any Innovando / Vercel origin + localhost
           {
             key: 'Content-Security-Policy',
-            value: "frame-ancestors 'self' https://reports.innovando.cl https://innovando-reports.vercel.app",
+            value: [
+              "frame-ancestors",
+              "'self'",
+              "https://reports.innovando.cl",
+              "https://*.innovando.cl",
+              "https://*.vercel.app",
+              "http://localhost:*",
+              "http://127.0.0.1:*",
+            ].join(' '),
+          },
+          // Explicitly override Next.js / Vercel default SAMEORIGIN restriction
+          {
+            key: 'X-Frame-Options',
+            value: 'ALLOWALL',
           },
         ],
       },
